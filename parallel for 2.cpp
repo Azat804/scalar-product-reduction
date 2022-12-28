@@ -7,7 +7,7 @@ int main()
 {
     int id;
     int i = 0;
-    int n = 800000;
+    int n = 100;
     int idcount=0;
     int cc = 0;
     int c = 0;
@@ -28,57 +28,22 @@ int main()
         printf("%d ", b[ii]);
     }
     printf("\n");
-    /*double t1 = omp_get_wtime();
-    #pragma omp parallel  private(id) shared(cc)
-    {
-    int id = omp_get_thread_num();
-    idcount = omp_get_num_threads();
-    size = n / idcount;
-    for (int j = 0; j < size; j++) {
-        cc =cc+ b[j + id * size]*a[j + id * size];
-        }
-    //printf("%d from %d, ", cc, id);
-    }*/
+    
     double t2= omp_get_wtime();
-    //printf("\n total: %d", cc);
-    //printf("\n time: %f", t2-t1);
 #pragma omp parallel for reduction (+:c) 
     for (int p = 0; p < n; p++) {
         c = c + a[p] * b[p];
     }
     double t3= omp_get_wtime();
     printf("\n total: %d", c);
-    printf("\n time: %f", t3 - t2);
+    printf("\n Reduction time: %f", t3 - t2);
     for (int h = 0; h < n; h++) {
         ccc = ccc + a[h] * b[h];
     }
     double t4= omp_get_wtime();
     printf("\n total: %d", ccc);
-    printf("\n time: %f", t4 - t3);
-    /*for (int ii = 0; ii < n; ii++) {
-        printf("%d\n ", c[ii]);
-    }
-    double t2 = omp_get_wtime();
-    printf("Time 1=%f\n", t2 - t1);
-
-#pragma omp parallel for
-    for (int p = 0; p < n; p++) {
-        d[p] = a[p] + b[p];
-    }
-
-    for (int jj = 0; jj < n; jj++) {
-        printf("%d\n ", d[jj]);
-    }
-    double t3 = omp_get_wtime();
-    printf("Time 2=%f\n", t3 - t2);
-    for (int kk = 0; kk < n; kk++) {
-        e[kk] = a[kk] + b[kk];
-    }
-    for (int pp = 0; pp < n; pp++) {
-        printf("%d\n ", e[pp]);
-    }
-    double t4 = omp_get_wtime();
-    printf("Time 3=%f\n", t4 - t3);*/
+    printf("\n Serial time: %f", t4 - t3);
+    
 }
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
